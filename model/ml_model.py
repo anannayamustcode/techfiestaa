@@ -6,11 +6,12 @@ from sklearn.metrics import mean_squared_error, r2_score
 import matplotlib.pyplot as plt
 import numpy as np
 from math import sqrt
+from pydantic import BaseModel
 
 
 version ='__0.1.0__'
 
-df= pd.read_excel(r'F:\Hackathon\final.xlsx')
+df= pd.read_excel(r'assets/final.xlsx')
 print(df.head())
 
 scaler = StandardScaler()
@@ -50,3 +51,8 @@ def show_on_map(lon, lat):
     plt.scatter(df4.Lon,df4.Lat, c='brown')
     plt.plot(lon, lat, markerfacecolor='black', markersize=50, markeredgecolor='k', marker='o')
     plt.show()
+
+
+class mlmodel():
+    lon: int
+    lat: int
