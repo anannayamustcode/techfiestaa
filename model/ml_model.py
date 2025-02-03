@@ -5,6 +5,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, r2_score
 import matplotlib.pyplot as plt
 import numpy as np
+from pydantic import BaseModel
 from math import sqrt
 
 
@@ -50,3 +51,7 @@ def show_on_map(lon, lat):
     plt.scatter(df4.Lon,df4.Lat, c='brown')
     plt.plot(lon, lat, markerfacecolor='black', markersize=50, markeredgecolor='k', marker='o')
     plt.show()
+
+class ml_model(BaseModel):
+    lon: int
+    lat: int
