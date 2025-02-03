@@ -1,2 +1,0 @@
-# techfiestaa
-Safe routes recommendation
