@@ -34,7 +34,7 @@ r2 = r2_score(Y_test,yhat)
 def predict_score(lon, lat):
     loc = np.array([[lon, lat]])
     score=knn.predict(loc)[0]
-    print(score)
+    return score
 
 df0=df[df.Clusters==0]
 df1=df[df.Clusters==1]
@@ -53,6 +53,3 @@ def show_on_map(lon, lat):
     plt.show()
 
 
-class mlmodel():
-    lon: int
-    lat: int
