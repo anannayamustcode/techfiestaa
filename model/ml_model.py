@@ -11,7 +11,7 @@ from math import sqrt
 
 version ='__0.1.0__'
 
-df= pd.read_excel(r'F:\Hackathon\final.xlsx')
+df= pd.read_excel(r'assets/final.xlsx')
 print(df.head())
 
 scaler = StandardScaler()
