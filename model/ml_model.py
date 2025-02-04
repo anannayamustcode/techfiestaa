@@ -20,20 +20,15 @@ X=df[['Lon', 'Lat']]
 Y=df['Crm Score']
 
 knn = KNeighborsRegressor(n_neighbors=5, algorithm='auto')
-X_train,X_test,Y_train,Y_test=train_test_split(X, Y, test_size=0.3,random_state=101, shuffle=True)
 
-sc_ft_train=scaler.fit_transform(X_train)
-sc_ft_test=scaler.fit_transform(X_test)
+X_scaled=scaler.fit_transform(X)
 
-knn.fit(sc_ft_train, Y_train)
+knn.fit(X_scaled, Y)
 
-yhat=knn.predict(sc_ft_test)
-score=sqrt(mean_squared_error(Y_test, yhat))
-r2 = r2_score(Y_test,yhat)
 
 def predict_score(lon, lat):
-    loc = np.array([[lon, lat]])
-    score=knn.predict(loc)[0]
+    loc = scaler.transform([[lon, lat]])
+    score=knn.predict(loc)
     return score
 
 df0=df[df.Clusters==0]
