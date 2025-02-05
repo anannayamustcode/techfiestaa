@@ -1,6 +1,12 @@
 import requests
 from model.ml_model import predict_score
 
+#all coords in form of lon,lat
+
+#ml model requires in form lat,lon
+
+start = (-118.2436, 34.0522)
+end = (-118.3215, 34.1330)  
 
 def get_routes(start, end):    
     print('\n\n')
@@ -9,41 +15,67 @@ def get_routes(start, end):
     response = requests.get(url)
     data = response.json()
 
+    routes=[]
+
     if "routes" in data:
-        routes = data["routes"][:3]  # Get up to 3 routes
+        route_data = data["routes"][:3]  # Get up to 3 routes
 
     # Store each route separately
-        route_1 = routes[0]["geometry"]["coordinates"] if len(routes) > 0 else None
-        route_2 = routes[1]["geometry"]["coordinates"] if len(routes) > 1 else None
-        route_3 = routes[2]["geometry"]["coordinates"] if len(routes) > 2 else None
+        for route in route_data:
+            route_coords = route["geometry"]["coordinates"]
+            routes.append(route_coords)
     
-    return route_1, route_2, route_3
+    return routes
 
 def avg_safety_score(route):
 
     score = 0
 
     for lon, lat in route:
-        score = score+predict_score(lon, lat)
+        score = score+predict_score(lat, lon)
     
     return score
 
-def safest_route(r1, r2, r3):
+def safest_route(routes):
     
-    r1s= avg_safety_score(r1)
-    r2s= avg_safety_score(r2)
-    r3s= avg_safety_score(r3)
+    safety_scores=[avg_safety_score(route) for route in routes]
 
-    safest = min(r1s, r2s, r3s)
+    safest_index = safety_scores.index(min(safety_scores))
 
-    if safest==r1s:
-        return r1
+    alternative_routes = routes[:safest_index] + routes[safest_index+1:]
+
+    return routes[safest_index], alternative_routes
+
+def get_safest_route(start, end):
+
+    routes = get_routes(start, end)
+
+    safe_route, alt_routes =safest_route(routes)
+
+    l=[] #Extract coordinates
+    for lon, lat in safe_route:
+        l.append([lat,lon])
     
-    elif safest==r2s:
-        return r2
+    return l
+
+def get_alt_routes(start, end):
+
+    try:    
+        routes=get_routes(start, end)
+
+        safe_route, alt_routes = safest_route(routes)
+
+        new_routes=[]
+        for route in alt_routes:
+            l=[]
+            for lon, lat in route:
+                l.append([lat,lon])
+            new_routes.append(l)
+        print(new_routes)
+        return new_routes
     
-    else:
-        return r3
+    except:
+        return 0
 
 
 
