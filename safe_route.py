@@ -74,7 +74,6 @@ def get_alt_routes(start, end):
             for lon, lat in route:
                 l.append([lat,lon])
             new_routes.append(l)
-        print(new_routes)
         return new_routes
     
     except:

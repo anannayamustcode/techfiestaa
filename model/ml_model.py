@@ -7,29 +7,19 @@ import matplotlib.pyplot as plt
 import numpy as np
 from math import sqrt
 from pydantic import BaseModel
-
+import joblib
 
 version ='__0.1.0__'
 
-df= pd.read_excel(r'assets/final.xlsx')
-
-
-scaler = StandardScaler(copy=False)
-
-X=df[['Lat', 'Lon']]
-Y=df['Crm Score']
-
-knn = KNeighborsRegressor(n_neighbors=5)
-
-X_scaled=scaler.fit_transform(X)
-
-knn.fit(X_scaled, Y)
-
+knn=joblib.load('model/knn_model.pkl')  
+scaler=joblib.load('model/scaler.pkl')
 
 def predict_score(lat, lon):
     loc = scaler.transform([[lat, lon]])
     score=knn.predict(loc)
     return score
+
+print(predict_score(34.513,-118.1030))
 
 
 
