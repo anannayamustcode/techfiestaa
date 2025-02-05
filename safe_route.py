@@ -48,15 +48,18 @@ def safest_route(routes):
 
 def get_safest_route(start, end):
 
-    routes = get_routes(start, end)
+    try:    
+        routes = get_routes(start, end)
 
-    safe_route, alt_routes =safest_route(routes)
+        safe_route, alt_routes =safest_route(routes)
 
-    l=[] #Extract coordinates
-    for lon, lat in safe_route:
-        l.append([lat,lon])
+        l=[] #Extract coordinates
+        for lon, lat in safe_route:
+            l.append([lat,lon])
     
-    return l
+        return l
+    except:
+        return 0
 
 def get_alt_routes(start, end):
 
